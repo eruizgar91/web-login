@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-// import logo from './logo.svg'
-// import './App.css'
 import { ethers } from 'ethers'
 
 function App() {
   const [signatures, setSignatures] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [message, setMessage] = useState<string>('');
-
 
   const signMessage = async (message: string) => {
     try {
@@ -34,12 +31,14 @@ function App() {
 
   const handleSign = async (e: any) => {
     e.preventDefault()
-    const sig = await signMessage('message' + Math.random())
+    const token = ethers.utils.hexValue(ethers.utils.randomBytes(20))
+    const sig = await signMessage(token)
     if (sig) {
       setSignatures(sig.signature)
       setAddress(sig.address)
       setMessage(sig.message)
     }
+    fetch(`http://localhost:3000/posts`, {method:'POST'}).then((response) => console.log(response))
   }
 
   return (

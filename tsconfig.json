@@ -1,11 +1,14 @@
 {
+  "typedocOptions": {
+    "out": "docs",
+    "name": "Web login",
+    "theme": "default",
+    "sort": ["source-order"],
+    "hideGenerator": true
+  },
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES6",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,13 +17,18 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
+    "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "react",
+    "rootDir": ".",
+    "baseUrl": "./src",
+    "outDir": "./dist/node",
     "noEmit": true,
-    "jsx": "react-jsx"
+    "downlevelIteration": true,
+    "sourceMap": false
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src/"],
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"]
 }
