@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
+import axios from 'axios'
+import { useSearchParams } from 'react-router-dom';
 
 function App() {
+  const  [searchParams, setSearchParams] = useSearchParams();
   const [signatures, setSignatures] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -31,14 +34,30 @@ function App() {
 
   const handleSign = async (e: any) => {
     e.preventDefault()
-    const token = ethers.utils.hexValue(ethers.utils.randomBytes(20))
-    const sig = await signMessage(token)
+    console.log(searchParams.get('id'))
+    console.log(searchParams.get('token'))
+    
+    const sig = await signMessage(searchParams.get('token')!)
     if (sig) {
       setSignatures(sig.signature)
       setAddress(sig.address)
       setMessage(sig.message)
     }
-    fetch(`http://localhost:3000/posts`, {method:'POST'}).then((response) => console.log(response))
+    axios
+    .put(
+        `http://localhost:3000/signups/${searchParams.get('id')}`,
+        {
+          token: sig?.message,
+          responseTimestamp: Date.now().toString(),
+          signature: sig?.signature,
+          walletAddress: sig?.address
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      )
+      .then((res) => res.data)
+      .then((json) => console.log(json))
+
+
   }
 
   return (
