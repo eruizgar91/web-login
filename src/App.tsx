@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
 import axios from 'axios'
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom'
 
 function App() {
-  const  [searchParams, setSearchParams] = useSearchParams();
-  const [signatures, setSignatures] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [signatures, setSignatures] = useState<string>('')
+  const [address, setAddress] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
 
   const signMessage = async (message: string) => {
     try {
@@ -21,7 +21,7 @@ function App() {
       const signature = await signer.signMessage(message)
       const address = await signer.getAddress()
 
-      // return signature 
+      // return signature
       return {
         message,
         signature,
@@ -36,7 +36,7 @@ function App() {
     e.preventDefault()
     console.log(searchParams.get('id'))
     console.log(searchParams.get('token'))
-    
+
     const sig = await signMessage(searchParams.get('token')!)
     if (sig) {
       setSignatures(sig.signature)
@@ -44,7 +44,7 @@ function App() {
       setMessage(sig.message)
     }
     axios
-    .put(
+      .put(
         `http://localhost:3000/signups/${searchParams.get('id')}`,
         {
           token: sig?.message,
@@ -56,8 +56,6 @@ function App() {
       )
       .then((res) => res.data)
       .then((json) => console.log(json))
-
-
   }
 
   return (
@@ -65,11 +63,11 @@ function App() {
       <header className='App-header'>
         <button onClick={handleSign}>Connect</button>
         <p>
-        signatures: {signatures}
-        <br/>
-        message: {message}
-        <br/>
-        address: {address}
+          signatures: {signatures}
+          <br />
+          message: {message}
+          <br />
+          address: {address}
         </p>
       </header>
     </div>
